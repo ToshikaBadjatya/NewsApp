@@ -62,12 +62,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     //lifecycle
-    implementation(libs.lifecycle.extensions)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     //room
     implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)   // 👈 replaced kapt with ksp
+    ksp(libs.androidx.room.compiler)
     implementation(libs.room.ktx)
 
     //dagger
