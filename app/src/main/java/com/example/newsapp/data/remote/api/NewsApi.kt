@@ -1,9 +1,9 @@
 package com.example.newsapp.data.remote.api
 
 import com.example.newsapp.data.remote.models.News
-import com.example.newsapp.utils.NetworkConstants
-import com.example.newsapp.utils.NetworkConstants.DEFAULT_PAGE_NUM
-import com.example.newsapp.utils.NetworkConstants.DEFAULT_PAGE_SIZE
+import com.example.newsapp.utils.constants.NetworkConstants
+import com.example.newsapp.utils.constants.NetworkConstants.DEFAULT_PAGE_NUM
+import com.example.newsapp.utils.constants.NetworkConstants.DEFAULT_PAGE_SIZE
 import retrofit2.http.GET
 import retrofit2.http.Query
 
