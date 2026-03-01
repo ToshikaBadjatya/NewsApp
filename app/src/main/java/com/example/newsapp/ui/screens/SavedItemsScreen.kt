@@ -5,7 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun SavedItems(){
+fun SavedItemsScreen(){
     Box {
         Text("Saved Items Screen")
     }

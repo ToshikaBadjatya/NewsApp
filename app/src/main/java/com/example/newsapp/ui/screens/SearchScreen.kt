@@ -1,12 +1,65 @@
 package com.example.newsapp.ui.screens
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.newsapp.R
+import com.example.newsapp.di.modifier
+import com.example.newsapp.ui.commonUi.NewsPaginationList
 
 @Composable
 fun SearchScreen() {
-    Box {
-        Text("Search Screen")
+    val search= remember{
+        mutableStateOf("")
+    }
+    Search(search.value,
+        {
+            search.value=it
+        }
+    ){
+        NewsPaginationList()
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Search(
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    contentToShow: @Composable ColumnScope.() -> Unit,) {
+    SearchBar(
+        query = searchQuery,
+        onQueryChange = onSearchQueryChange,
+        onSearch = {},
+        placeholder = {
+            Text(text = stringResource(id = R.string.search))
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null
+            )
+        },
+        active = true,
+        onActiveChange = {},
+        tonalElevation = 0.dp,
+        modifier= Modifier.fillMaxWidth().wrapContentHeight(),
+        shape = RoundedCornerShape(8.dp),
+    ) {
+        contentToShow()
     }
 }

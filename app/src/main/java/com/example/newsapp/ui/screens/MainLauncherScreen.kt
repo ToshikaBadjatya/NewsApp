@@ -4,15 +4,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.navigation.Destination
 import com.example.newsapp.navigation.NavGraph
+import com.example.newsapp.ui.commonUi.TopHeadline
 import com.example.newsapp.ui.commonUi.BottomNavigationBar
 
 @Composable
@@ -23,7 +22,7 @@ fun MainLauncherScreen(){
     }
     Scaffold(
         topBar = {
-
+            TopHeadline { navController.popBackStack(Destination.TopHeadline.path, false) }
         },
         bottomBar = {
             BottomNavigationBar(selectedPosition.value){index,destination->

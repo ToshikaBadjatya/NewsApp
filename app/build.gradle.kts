@@ -70,9 +70,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.room.ktx)
 
-    //dagger
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
+    //Dagger(hilt)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.common)
     //reflection
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 

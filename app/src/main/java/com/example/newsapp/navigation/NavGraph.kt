@@ -7,6 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.newsapp.ui.screens.FilterScreen
+import com.example.newsapp.ui.screens.SavedItemsScreen
+import com.example.newsapp.ui.screens.SearchScreen
+import com.example.newsapp.ui.screens.TopHeadlineScreen
 
 @Composable
 fun NavGraph( navController: NavHostController,modifier: Modifier) {
@@ -15,10 +19,18 @@ fun NavGraph( navController: NavHostController,modifier: Modifier) {
         startDestination = Destination.TopHeadline.path,
         modifier = modifier,
     ){
-        composable(Destination.TopHeadline.path) {  }
-        composable(Destination.Search.path) {  }
-       composable(Destination.Saved.path) {  }
-       composable(Destination.FilterScreen.path) {  }
+        composable(Destination.TopHeadline.path) {
+            TopHeadlineScreen()
+        }
+        composable(Destination.Search.path) {
+            SearchScreen()
+        }
+       composable(Destination.Saved.path) {
+           SavedItemsScreen()
+       }
+       composable(Destination.FilterScreen.path) {
+           FilterScreen()
+       }
     }
 
 }
