@@ -1,4 +1,7 @@
 package com.example.newsapp.di.component
 
-class ApplicationComponent {
+import dagger.Component
+
+@Component
+interface ApplicationComponent {
 }

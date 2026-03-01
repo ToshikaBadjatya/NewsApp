@@ -1,11 +1,42 @@
 package com.example.newsapp.navigation
 
-sealed class Destination(val path: String) {
-    object  Search : Destination("search_screen")
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.ui.graphics.vector.ImageVector
 
-    object Saved : Destination("saved_screen")
 
-    object TopHeadline : Destination("top_headline")
+sealed class Destination(open val path: String,
+                         open val label: String,
+                         open val icon: ImageVector, open val order:Int) {
+    object TopHeadline : Destination(
+        path = "top_headline",
+        label = "Top News",
+        icon = Icons.Default.Home,
+        order = 0
 
-    data class FilterScreen(val category: String, val country: String) : Destination("filter_screen")
+    )
+    object Search : Destination(
+        path = "search_screen",
+        label = "Search",
+        icon = Icons.Default.Search,
+        order = 1
+    )
+
+    object Saved : Destination(
+        path = "saved_screen",
+        label = "Saved",
+        icon = Icons.Default.Favorite,
+        order = 2
+    )
+
+
+
+    object FilterScreen : Destination(
+        path = "filter_screen",
+        label = "Filters",
+        icon = Icons.Default.Favorite,
+        order = 3
+    )
 }

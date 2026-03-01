@@ -1,4 +1,8 @@
 package com.example.newsapp.di.component
 
-class ActivityComponent {
+import androidx.compose.runtime.Composable
+import dagger.Component
+
+@Component
+ interface ActivityComponent {
 }
