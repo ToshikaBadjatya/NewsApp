@@ -71,9 +71,11 @@ dependencies {
     implementation(libs.room.ktx)
 
     //Dagger(hilt)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.androidx.hilt.common)
+    //Dagger
+    implementation("com.google.dagger:hilt-android:2.44")
+    ksp("com.google.dagger:hilt-compiler:2.44")
+    implementation("androidx.hilt:hilt-common:1.1.0")
+
     //reflection
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
