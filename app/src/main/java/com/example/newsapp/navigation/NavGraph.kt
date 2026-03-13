@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.ui.screens.FilterScreen
+import com.example.newsapp.ui.screens.NewsDescriptionScreeen
 import com.example.newsapp.ui.screens.SavedItemsScreen
 import com.example.newsapp.ui.screens.SearchScreen
 import com.example.newsapp.ui.screens.TopHeadlineScreen
@@ -31,6 +32,9 @@ fun NavGraph( navController: NavHostController,modifier: Modifier) {
        composable(Destination.FilterScreen.path) {
            FilterScreen()
        }
+        composable("news_detail") {
+            NewsDescriptionScreeen()
+        }
     }
 
 }

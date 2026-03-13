@@ -7,7 +7,7 @@ import com.example.newsapp.utils.constants.NetworkConstants.DEFAULT_PAGE_SIZE
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiInterface {
+interface NewsApi {
     @GET(NetworkConstants.TOP_HEADLINES)
     suspend fun getTopNews(
         @Query("country") country: String ,

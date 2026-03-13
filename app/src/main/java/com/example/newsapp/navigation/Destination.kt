@@ -39,4 +39,5 @@ sealed class Destination(open val path: String,
         icon = Icons.Default.Favorite,
         order = 3
     )
+
 }

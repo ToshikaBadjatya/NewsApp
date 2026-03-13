@@ -7,4 +7,6 @@ object NetworkConstants {
     const val EVERYTHING=BASE_URL+"/everything"
     const val DEFAULT_PAGE_SIZE=10
     const val DEFAULT_PAGE_NUM=1
+    const val READ_TIMEOUT=4000L
+    const val WRITE_TIMEOUT=4000
 }

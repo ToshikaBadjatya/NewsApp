@@ -10,6 +10,7 @@ lifecycleRuntimeKtx = "2.9.3"
 activityCompose = "1.10.1"
 composeBom = "2024.09.00"
 glide = "4.16.0"
+mockitoAndroid = "5.22.0"
 retrofit = "3.0.0"
 lifecycleExtensions = "1.1.1"
 lifecycleViewmodelKtx = "2.9.2"
@@ -40,6 +41,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 lifecycle-extensions = { module = "android.arch.lifecycle:extensions", version.ref = "lifecycleExtensions" }
