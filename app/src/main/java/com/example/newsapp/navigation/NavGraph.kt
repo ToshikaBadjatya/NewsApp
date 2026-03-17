@@ -17,12 +17,12 @@ import com.example.newsapp.ui.screens.TopHeadlineScreen
 fun NavGraph( navController: NavHostController,modifier: Modifier) {
     NavHost(
         navController = navController,
-        startDestination = Destination.Search.path,
+        startDestination = Destination.TopHeadline.path,
         modifier = modifier,
     ){
-//        composable(Destination.TopHeadline.path) {
-//            TopHeadlineScreen()
-//        }
+        composable(Destination.TopHeadline.path) {
+            TopHeadlineScreen()
+        }
         composable(Destination.Search.path) {
             SearchScreen()
         }

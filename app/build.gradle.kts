@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.paging.compose)
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockito.android)
@@ -67,6 +70,8 @@ dependencies {
     //lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
+
     //room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
@@ -80,5 +85,7 @@ dependencies {
 
     //reflection
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    //ImageLoading
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
 }

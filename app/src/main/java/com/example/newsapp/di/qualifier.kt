@@ -11,3 +11,8 @@ annotation class BaseUrl
 annotation class DbName
 @Qualifier
 annotation class ApiKey
+
+@Qualifier
+annotation class Network
+@Qualifier
+annotation class Database

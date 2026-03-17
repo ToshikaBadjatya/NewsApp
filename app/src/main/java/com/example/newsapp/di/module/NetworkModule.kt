@@ -38,6 +38,11 @@ class NetworkModule {
     }
     @Provides
     @Singleton
+    fun getGsonConvertorFactory(): GsonConverterFactory {
+        return GsonConverterFactory.create()
+    }
+    @Provides
+    @Singleton
     fun getOkHttClient(apiKeyInterceptor: ApiKeyInterceptor): OkHttpClient{
         return OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)

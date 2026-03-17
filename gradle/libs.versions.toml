@@ -11,6 +11,8 @@ activityCompose = "1.10.1"
 composeBom = "2024.09.00"
 glide = "4.16.0"
 mockitoAndroid = "5.22.0"
+pagingCompose = "3.3.6"
+pagingRuntimeKtx = "3.3.6"
 retrofit = "3.0.0"
 lifecycleExtensions = "1.1.1"
 lifecycleViewmodelKtx = "2.9.2"
@@ -19,12 +21,14 @@ roomKtx = "2.5.2"
 roomRuntime = "2.7.2"
 dagger = "2.57"
 navigationCompose = "2.9.5"
-hiltAndroid = "2.57.1"
-hiltCompiler = "2.57.1"
+hiltAndroid = "2.51"
+hiltCompiler = "2.51"
 androidxHilt = "1.2.0"
+pagingCommon = "3.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -42,6 +46,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 lifecycle-extensions = { module = "android.arch.lifecycle:extensions", version.ref = "lifecycleExtensions" }
@@ -53,9 +58,10 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
-
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxHilt" }
 androidx-hilt-common = { module = "androidx.hilt:hilt-common", version.ref = "androidxHilt" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHilt" }
+androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "pagingCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

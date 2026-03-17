@@ -1,15 +1,38 @@
 package com.example.newsapp.ui.commonUi
 
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import com.example.newsapp.R
+import com.example.newsapp.data.remote.models.Article
+import androidx.compose.ui.res.stringResource
 
 @Composable
-fun NewsPaginationList(){
-    LazyColumn {
-        items((1..10).toList()){
-            NewsItem()
+fun NewsPaginationList(pagingList: LazyPagingItems<Article>){
+    val response=pagingList.loadState.append
+    when(response){
+        is LoadState.Loading->{
+           ShowLoading(stringResource(R.string.loading_news))
+        }
+
+        is LoadState.Error->{
+           ShowError(response.error.message)
+        }
+
+        else -> {
+            LazyColumn {
+                items(pagingList.itemCount){
+                    if(pagingList[it]!=null){
+                        NewsItem(pagingList[it]!!)
+                    }
+
+                }
+            }
+
         }
     }
+
+
 
 }
