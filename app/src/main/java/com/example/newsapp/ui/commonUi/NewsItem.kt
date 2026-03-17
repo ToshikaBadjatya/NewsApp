@@ -1,8 +1,10 @@
 package com.example.newsapp.ui.commonUi
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -25,6 +30,7 @@ import com.example.newsapp.data.remote.models.Article
 
 @Composable
 fun NewsItem(article: Article) {
+    Log.e("item","article shown is $article")
     Card(modifier = Modifier.fillMaxWidth()
         .wrapContentHeight()
         .padding(10.dp),
@@ -37,8 +43,9 @@ fun NewsItem(article: Article) {
                     .build(),"",
                 modifier= Modifier.height(120.dp).fillMaxWidth().weight(2f))
             Column( modifier= Modifier.wrapContentHeight().fillMaxWidth().weight(3f).padding(start = 10.dp)) {
-                Text(article.title?:"")
-                Text(article.description?:"")
+                Text(article.title?:"", maxLines = 1,overflow= TextOverflow.Ellipsis, fontWeight = FontWeight.Bold )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(article.description?:"", maxLines = 3,overflow= TextOverflow.Ellipsis)
             }
         }
     }

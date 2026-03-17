@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.kotlinAndroidKsp)
+    alias(libs.plugins.hiltAndroid)
 }
 
 android {
@@ -67,6 +68,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging.interceptor)
     //lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
@@ -79,9 +81,9 @@ dependencies {
 
     //Dagger(hilt)
     //Dagger
-    implementation("com.google.dagger:hilt-android:2.44")
-    ksp("com.google.dagger:hilt-compiler:2.44")
-    implementation("androidx.hilt:hilt-common:1.1.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //reflection
     implementation("org.jetbrains.kotlin:kotlin-reflect")

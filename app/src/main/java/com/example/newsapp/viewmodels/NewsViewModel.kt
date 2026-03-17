@@ -36,7 +36,7 @@ class NewsViewModel @Inject constructor(@Network val newsRepository: NewsReposit
                 .catch {  }
                 .map {
                     it.filter {
-                        it.title.isNullOrEmpty()
+                        !it.title.isNullOrEmpty()
                     }
                 }
                 .collect { newsPagingItem.value=it }

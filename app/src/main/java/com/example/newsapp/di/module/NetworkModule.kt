@@ -9,9 +9,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.OptionalConverterFactory
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -43,16 +42,24 @@ class NetworkModule {
     }
     @Provides
     @Singleton
-    fun getOkHttClient(apiKeyInterceptor: ApiKeyInterceptor): OkHttpClient{
+    fun getOkHttClient(apiKeyInterceptor: ApiKeyInterceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient{
         return OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(loggingInterceptor)
             .readTimeout(4, TimeUnit.SECONDS)
             .writeTimeout(4, TimeUnit.SECONDS)
             .build()
     }
     @Provides
-    fun getApiKeyInterceptor(@ApiKey apiKey: String): Interceptor{
-      return ApiKeyInterceptor(apiKey)
+    @Singleton
+    fun getLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+    @Provides
+    fun getApiKeyInterceptor(@ApiKey apiKey: String): ApiKeyInterceptor {
+        return ApiKeyInterceptor(apiKey)
     }
     @BaseUrl
     @Provides
