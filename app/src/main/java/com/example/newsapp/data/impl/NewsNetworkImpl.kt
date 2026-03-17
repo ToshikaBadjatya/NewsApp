@@ -5,6 +5,7 @@ import com.example.newsapp.data.remote.api.NewsApi
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.data.remote.models.News
 import com.example.newsapp.domain.NewsRepository
+import com.example.newsapp.ui.UIState
 import com.example.newsapp.utils.others.checkError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,8 +35,22 @@ class NewsNetworkImpl @Inject constructor(val newsApi: NewsApi): NewsRepository 
 
     }
 
-    override suspend fun searchNews(start: Int): Flow<List<Article>> {
-        return flow {  }
+    override suspend fun searchNews(search: String): Flow<UIState<List<Article>>> {
+        return flow {
+            emit(UIState.Loading)
+
+            val news = newsApi.searchNews(search) // assuming this API exists
+
+            if(!news.checkError()) {
+                val data = news.body()?.articles ?: emptyList()
+                emit(UIState.Success(data))
+            }
+
+        }.catch { e ->
+            emit(UIState.Failure(e.message))
+        }.flowOn(Dispatchers.IO)
     }
+
+
 }
 

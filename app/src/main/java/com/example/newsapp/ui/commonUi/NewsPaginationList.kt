@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 
 @Composable
 fun NewsPaginationList(pagingList: LazyPagingItems<Article>){
-    val response=pagingList.loadState.refresh
+    val response=pagingList.loadState.append
     when(response){
         is LoadState.Loading->{
            ShowLoading(stringResource(R.string.loading_news))
@@ -22,15 +22,10 @@ fun NewsPaginationList(pagingList: LazyPagingItems<Article>){
 
         else -> {
             val items=pagingList.itemSnapshotList.items
-            LazyColumn {
-                items(items.size){it->
-                  NewsItem(items[it])
-                }
-            }
+             NewsList(items)
 
         }
     }
-
 
 
 }

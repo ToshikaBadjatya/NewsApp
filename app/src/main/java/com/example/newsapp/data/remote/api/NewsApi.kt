@@ -37,7 +37,7 @@ interface NewsApi {
         @Query("q") searchQuery: String,
         @Query("page") pageNum: Int = DEFAULT_PAGE_NUM,
         @Query("pageSize") pageSize: Int = DEFAULT_PAGE_SIZE,
-    ): News
+    ): retrofit2.Response<News>
 
 
 }

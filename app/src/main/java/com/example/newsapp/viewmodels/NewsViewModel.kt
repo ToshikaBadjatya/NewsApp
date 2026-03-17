@@ -1,5 +1,6 @@
 package com.example.newsapp.viewmodels
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,5 +42,16 @@ class NewsViewModel @Inject constructor(@Network val newsRepository: NewsReposit
                 }
                 .collect { newsPagingItem.value=it }
          }
+    }
+
+    fun search(search: String) {
+        viewModelScope.launch {
+           newsRepository.searchNews(search)
+                .catch {
+
+                }
+                .collect { news.value=it }
+        }
+
     }
 }
