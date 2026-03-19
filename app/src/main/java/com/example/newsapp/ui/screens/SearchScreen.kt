@@ -30,8 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newsapp.R
+import com.example.newsapp.data.impl.NewsNetworkImpl
 import com.example.newsapp.ui.commonUi.NewsList
 import com.example.newsapp.ui.commonUi.NewsUiList
+import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 import com.example.newsapp.viewmodels.NewsViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -44,7 +46,7 @@ fun SearchScreen() {
     val search= remember{
         mutableStateOf("")
     }
-    val newsViewModel: NewsViewModel = hiltViewModel()
+    val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
     LaunchedEffect(Unit) {
         snapshotFlow { search.value }
             .debounce(1000)

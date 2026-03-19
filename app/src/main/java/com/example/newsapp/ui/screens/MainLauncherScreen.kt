@@ -20,13 +20,17 @@ fun MainLauncherScreen(){
     val selectedPosition = remember {
         mutableStateOf(0)
     }
+    val selectedDestination = remember {
+        mutableStateOf<Destination>(Destination.TopHeadline)
+    }
     Scaffold(
         topBar = {
-            TopHeadline { navController.popBackStack(Destination.TopHeadline.path, false) }
+            TopHeadline(selectedDestination.value.label) { navController.popBackStack(Destination.TopHeadline.path, false) }
         },
         bottomBar = {
             BottomNavigationBar(selectedPosition.value){index,destination->
                 selectedPosition.value=index
+                selectedDestination.value=destination
                 goToScreen(destination,navController)
             }
         }

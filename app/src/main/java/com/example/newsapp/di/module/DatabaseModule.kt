@@ -1,7 +1,6 @@
 package com.example.newsapp.di.module
 
 import android.app.Application
-import androidx.room.Database
 import androidx.room.Room
 import com.example.newsapp.data.local.dao.NewsDao
 import com.example.newsapp.data.local.database.NewsDatabase
@@ -31,7 +30,11 @@ class DatabaseModule {
         )
             .build()
     }
-
+    @Singleton
+    @Provides
+    fun getNewsDao(newsDatabase: NewsDatabase): NewsDao {
+        return newsDatabase.newsDao()
+    }
     @DbName
     @Provides
     fun provideDbName(): String = Constants.DB_NAME

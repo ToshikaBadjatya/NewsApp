@@ -6,11 +6,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 //import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.newsapp.ui.commonUi.NewsPaginationList
+import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 import com.example.newsapp.viewmodels.NewsViewModel
 
 @Composable
 fun TopHeadlineScreen() {
-    val newsViewModel: NewsViewModel = hiltViewModel()
+    val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
     LaunchedEffect(Unit) {
        newsViewModel.fetchTopHeadlines()
     }

@@ -16,9 +16,8 @@ import com.example.newsapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopHeadline(goback:()-> Unit) {
-    val context= LocalContext.current
-    TopAppBar(title = {Text(context.getString(R.string.app_name))},
+fun TopHeadline(screenName:String,goback:()-> Unit) {
+    TopAppBar(title = {Text(screenName)},
         navigationIcon = { IconButton({goback}){
             Icon(
                 imageVector = Icons.Default.ArrowBack,

@@ -14,7 +14,7 @@ fun NewsDescriptionScreeen() {
     val navController= rememberNavController()
     Scaffold(
         topBar = {
-            TopHeadline { navController.popBackStack(Destination.TopHeadline.path, false) }
+            TopHeadline("Desc") { navController.popBackStack(Destination.TopHeadline.path, false) }
         },
     ){paddingValues ->
         WebViewScreen(modifier= Modifier.fillMaxSize().padding(paddingValues))

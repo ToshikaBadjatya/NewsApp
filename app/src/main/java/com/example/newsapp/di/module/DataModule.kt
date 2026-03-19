@@ -31,6 +31,13 @@ class DataModule {
         }
     }
     @Provides
+    @Database
+    fun getDatabasePager(pagingConfig: PagingConfig,@Database pagingSource: NewsPagingSource): Pager<Int, Article>{
+        return Pager(pagingConfig){
+            pagingSource
+        }
+    }
+    @Provides
     fun getPagingConfig() : PagingConfig{
         return PagingConfig(NetworkConstants.DEFAULT_PAGE_SIZE)
     }
@@ -60,4 +67,5 @@ class DataModule {
     fun getNewsRepositoryDb(newsDao: NewsDao): NewsRepository{
         return NewsDatabaseImpl(newsDao)
     }
+
 }

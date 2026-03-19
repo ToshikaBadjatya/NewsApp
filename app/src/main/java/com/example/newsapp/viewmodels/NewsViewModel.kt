@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class NewsViewModel @Inject constructor(@Network val newsRepository: NewsRepository,
-                                        @Network val networkPager: Pager<Int, Article>): ViewModel() {
+
+open class NewsViewModel @Inject constructor(@Network open val newsRepository: NewsRepository,
+                                        @Network open val networkPager: Pager<Int, Article>): ViewModel() {
     private val news= MutableStateFlow<UIState<List<Article>>>(UIState.Idle)
     val _news: StateFlow<UIState<List<Article>>> =news
 
