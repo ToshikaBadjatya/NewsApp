@@ -14,15 +14,7 @@ fun parseError(errorBody: ResponseBody?): CustomErrorClass {
     return CustomErrorClass.NoInternet
 }
 
-inline fun <T> Response<T>.checkError(): Boolean {
-    if (isSuccessful) {
-        return false
-    }
-    throw (parseError(errorBody()))
 
-    return true
-
-}
 
 sealed class CustomErrorClass(val msg: String) : Exception(msg) {
     object NoInternet : CustomErrorClass("No internet connection. Please check your network.")

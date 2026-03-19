@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.commonUi
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -41,6 +42,7 @@ fun ShowLoading(msg: String) {
 }
 @Composable
 fun ShowError(message: String?) {
+    Log.e("error","show error called")
     var visible by remember { mutableStateOf(true) }
 
     if (visible) {

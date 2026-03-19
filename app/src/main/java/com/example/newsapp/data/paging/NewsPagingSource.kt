@@ -1,24 +1,26 @@
 package com.example.newsapp.data.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.domain.NewsRepository
+import com.example.newsapp.interfaces.DispatchersProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-    class NewsPagingSource@Inject constructor(val callback:suspend (Int)-> Flow<List<Article>>): PagingSource<Int, Article>() {
+    class NewsPagingSource@Inject constructor(val dispatchersProvider: DispatchersProvider,val callback:suspend (Int)-> Flow<List<Article>>): PagingSource<Int, Article>() {
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
           var page=params.key?:1
+
             return try {
                 var data: List<Article> = emptyList()
 
                 callback.invoke(page)
-                    .flowOn(Dispatchers.IO)
+                    .flowOn(dispatchersProvider.io)
                     .catch { throw it }
                     .collect {
                         data = it
@@ -30,6 +32,7 @@ import javax.inject.Inject
                     page + 1
                 )
             } catch (e: Exception) {
+                Log.e("error","error got $e")
                 LoadResult.Error(e)
             }
         }

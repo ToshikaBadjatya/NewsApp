@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,8 @@ import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -56,10 +59,10 @@ fun SearchScreen() {
         {
             search.value=it
         }
-    ){
+    )
         val newsState=newsViewModel._news.collectAsStateWithLifecycle()
         NewsUiList(newsState.value)
-    }
+
 
 }
 
@@ -68,25 +71,31 @@ fun SearchScreen() {
 fun Search(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    contentToShow: @Composable ColumnScope.() -> Unit,) {
-    SearchBar(
-        query = searchQuery,
-        onQueryChange = onSearchQueryChange,
-        onSearch = {},
-        placeholder = {
-            Text(text = stringResource(id = R.string.search))
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        active = true,
-        onActiveChange = {},
-        tonalElevation = 0.dp,
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
-    ) {
-        contentToShow()
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = onSearchQueryChange,
+            placeholder = { Text(stringResource(R.string.search)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            shape = RoundedCornerShape(50),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+            singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        )
     }
+
 }
