@@ -1,7 +1,9 @@
 package com.example.newsapp.ui.commonUi
 
 import android.util.Log
+import android.widget.ImageButton
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,11 +28,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.newsapp.R
 import com.example.newsapp.data.remote.models.Article
 
 @Composable
@@ -54,26 +58,24 @@ fun NewsItem(article: Article, showSave:Boolean=true,onSave: ((Article) -> Unit)
         Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
                 ImageRequest.Builder(LocalContext.current).data(article.urlToImage).build(), "",
-                modifier = Modifier.height(120.dp).fillMaxWidth().weight(2f)
+                modifier = Modifier.height(120.dp).fillMaxWidth().weight(2f),
             )
             Column(
                 modifier = Modifier.wrapContentHeight().fillMaxWidth().weight(3f).padding(start = 10.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 if(showSave){
-                    IconButton(
-                        onClick = {
-                            saved.value = !saved.value
-                            onSave?.invoke(article)
-                        },
-                        modifier = Modifier.size(32.dp).align(Alignment.End)
-                    ) {
-                        Icon(
-                            imageVector = if (saved.value) Icons.Default.Done else Icons.Default.Done,
+                    Image(
+                            painter = if (saved.value) painterResource(R.drawable.ic_save) else painterResource(R.drawable.ic_save),
                             contentDescription = "Save article",
-                            tint = if (saved.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            modifier= Modifier.clickable{
+
+                                    saved.value = !saved.value
+                                    onSave?.invoke(article)
+
+                            }, alignment = Alignment.TopEnd
                         )
-                    }
+
                 }
 
                 Text(article.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
