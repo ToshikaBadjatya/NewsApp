@@ -1,10 +1,8 @@
 package com.example.newsapp.ui.commonUi
 
 import android.util.Log
-import android.widget.ImageButton
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -28,60 +27,69 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.newsapp.R
 import com.example.newsapp.data.remote.models.Article
+import com.example.newsapp.utils.constants.TestingSemantics
+
 
 @Composable
-fun NewsList(items: List<Article>) {
-    LazyColumn {
-        items(items.size){it->
-            NewsItem(items[it])
+fun NewsList(items: List<Article>, onItemClick: (Article) -> Unit = {}) {
+    LazyColumn(modifier = Modifier.semantics{contentDescription= TestingSemantics.NEWS_LIST}) {
+        items(items.size) { it ->
+            NewsItem(items[it], onClick = onItemClick)
         }
     }
 }
 
 @Composable
-fun NewsItem(article: Article, showSave:Boolean=true,onSave: ((Article) -> Unit)? = null) {
+fun NewsItem(article: Article, showSave: Boolean = true, onSave: ((Article) -> Unit)? = null,
+             onClick: ((Article) -> Unit)? = null) {
     Log.e("item", "article shown is $article")
     val saved = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
-        onClick = {}
+        onClick = {
+            onClick?.invoke(article)
+        }
     ) {
         Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
                 ImageRequest.Builder(LocalContext.current).data(article.urlToImage).build(), "",
-                modifier = Modifier.height(120.dp).fillMaxWidth().weight(2f),
+                modifier = Modifier.height(120.dp).fillMaxWidth().weight(2f)
             )
-            Column(
-                modifier = Modifier.wrapContentHeight().fillMaxWidth().weight(3f).padding(start = 10.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                if(showSave){
-                    Image(
-                            painter = if (saved.value) painterResource(R.drawable.ic_save) else painterResource(R.drawable.ic_save),
+            Box(modifier = Modifier.weight(3f).padding(start = 10.dp)) {
+                if (showSave) {
+                    IconButton(
+                        onClick = {
+                            saved.value = !saved.value
+                            onSave?.invoke(article)
+                        },
+                        modifier = Modifier.size(32.dp).align(Alignment.TopEnd).padding(start = 4.dp  ).semantics{
+                            contentDescription= TestingSemantics.SAVED_NEWS
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (saved.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Save article",
-                            modifier= Modifier.clickable{
-
-                                    saved.value = !saved.value
-                                    onSave?.invoke(article)
-
-                            }, alignment = Alignment.TopEnd
+                            tint = if (saved.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
-
+                    }
                 }
-
-                Text(article.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(article.description ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis)
-                Spacer(modifier = Modifier.height(8.dp))
+                Column(modifier = Modifier.fillMaxWidth(),) {
+                    Text(article.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold
+                        , modifier = Modifier.semantics{
+                            contentDescription= TestingSemantics.NEWS_TITLE
+                        })
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(article.description ?: "", maxLines = 3, overflow = TextOverflow.Clip)
+                }
 
             }
         }

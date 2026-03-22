@@ -5,18 +5,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavController
 import com.example.newsapp.navigation.Destination
 import com.example.newsapp.ui.commonUi.TopHeadline
 
 @Composable
-fun NewsDescriptionScreeen() {
-    val navController= rememberNavController()
+fun NewsDescriptionScreeen(navController: NavController, url: String) {
     Scaffold(
         topBar = {
-            TopHeadline("Desc") { navController.popBackStack(Destination.TopHeadline.path, false) }
-        },
-    ){paddingValues ->
-        WebViewScreen(modifier= Modifier.fillMaxSize().padding(paddingValues))
+            TopHeadline("News Description") {
+                navController.popBackStack(Destination.TopHeadline.path, false)
+            }
+        }
+    ) { paddingValues ->
+        WebViewScreen(url = url, modifier = Modifier.fillMaxSize().padding(paddingValues))
     }
 }

@@ -22,7 +22,9 @@ fun NewsUiList(listResponse: UIState<List<Article>>){
 
         is UIState.Success -> {
             val items=listResponse.data
-            NewsList(items)
+            NewsList(items){
+//                goToDetail.invoke(it)
+            }
 
         }
         else->{

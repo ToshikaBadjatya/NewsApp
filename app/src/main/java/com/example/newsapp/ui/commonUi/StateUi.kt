@@ -19,7 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.utils.constants.TestingSemantics
 
 @Composable
 fun ShowLoading(msg: String) {
@@ -32,7 +35,9 @@ fun ShowLoading(msg: String) {
     ) {
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator(
-                strokeWidth = 1.dp
+                strokeWidth = 1.dp, modifier = Modifier.semantics{
+                    contentDescription= TestingSemantics.LOADER
+                }
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(msg)
@@ -49,9 +54,11 @@ fun ShowError(message: String?) {
         AlertDialog(
             onDismissRequest = { visible = false },
             title = { Text(text = "Error", style = MaterialTheme.typography.titleMedium) },
-            text = { Text(text = message ?: "Internal server error") },
+            text = { Text(text = message ?: "Internal server error", Modifier.semantics{
+                contentDescription= TestingSemantics.ERROR_MESSAGE
+            }) },
             confirmButton = {
-                TextButton(onClick = { visible = false }) {
+                TextButton(onClick = { visible = false }, ) {
                     Text("OK")
                 }
             }

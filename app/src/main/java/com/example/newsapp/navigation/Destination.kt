@@ -40,4 +40,19 @@ sealed class Destination(open val path: String,
         order = 3
     )
 
+
+    }
+
+sealed class MainDestinations(open val path: String,
+                      ) {
+
+    object NewsDetail : MainDestinations(
+        path = "news_detail/{url}",
+    ) {
+        fun createRoute(url: String) = "news_detail/${java.net.URLEncoder.encode(url, "UTF-8")}"
+    }
+    object Dashboard : MainDestinations(
+        path = "dashboard",
+
+    )
 }

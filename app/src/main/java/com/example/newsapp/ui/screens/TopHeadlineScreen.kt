@@ -5,17 +5,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 //import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.navigation.NavController
+import com.example.newsapp.navigation.MainDestinations
 import com.example.newsapp.ui.commonUi.NewsPaginationList
 import com.example.newsapp.viewmodels.NetworkNewsViewmodel
-import com.example.newsapp.viewmodels.NewsViewModel
 
 @Composable
-fun TopHeadlineScreen() {
+fun TopHeadlineScreen(navController: NavController) {
     val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
     LaunchedEffect(Unit) {
-       newsViewModel.fetchTopHeadlines()
+        newsViewModel.fetchTopHeadlines()
     }
-    val pagingList=newsViewModel._newsPagingItem.collectAsLazyPagingItems()
-    NewsPaginationList(pagingList)
+    val pagingList = newsViewModel._newsPagingItem.collectAsLazyPagingItems()
+    NewsPaginationList(pagingList, onItemClick = { article ->
+        navController.navigate(MainDestinations.NewsDetail.createRoute(article.url))
+    })
 }
 
