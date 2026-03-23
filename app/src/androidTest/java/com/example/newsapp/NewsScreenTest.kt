@@ -10,6 +10,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -114,39 +116,6 @@ class NewsScreenTest {
 
     }
 
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    @Test
-//    fun checkItemsDisplayedOnPaginatedList() {
-//        // Share one scheduler so runTest and collectAsLazyPagingItems
-//        // drain on the same virtual clock
-//        val scheduler = TestCoroutineScheduler()
-//        val testDispatcher = UnconfinedTestDispatcher(scheduler)
-//
-//        val pagingData = PagingData.from(TestData.articleList)
-//        val flow = flowOf(pagingData)
-//
-//        composeTestRule.setContent {
-//            val lazyPagingItems = flow.collectAsLazyPagingItems(testDispatcher)
-//            NewsPaginationList(lazyPagingItems)
-//        }
-//
-//        // Drain all pending coroutines on the shared scheduler,
-//        // then let Compose recompose with the settled paging state
-//        scheduler.advanceUntilIdle()
-//        composeTestRule.waitForIdle()
-//        composeTestRule.onNodeWithContentDescription(TestingSemantics.LOADER)
-//            .assertExists()
-////        composeTestRule.onNodeWithContentDescription(TestingSemantics.NEWS_LIST)
-////            .assertExists()
-//
-//        composeTestRule
-//            .onNodeWithText(TestData.articleList[0].title!!, substring = true)
-//            .assertExists()
-//            .assertHasClickAction()
-//
-//        composeTestRule.onNodeWithContentDescription(TestingSemantics.NEWS_LIST)
-//            .performScrollToNode(hasText(TestData.articleList.last().title!!, substring = true))
-//    }
 
 }
 

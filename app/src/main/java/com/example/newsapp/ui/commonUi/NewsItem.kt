@@ -82,7 +82,7 @@ fun NewsItem(article: Article, showSave: Boolean = true, onSave: ((Article) -> U
                         )
                     }
                 }
-                Column(modifier = Modifier.fillMaxWidth(),) {
+                Column(modifier = Modifier.fillMaxWidth().padding(top=25.dp),) {
                     Text(article.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold
                         , modifier = Modifier.semantics{
                             contentDescription= TestingSemantics.NEWS_TITLE
