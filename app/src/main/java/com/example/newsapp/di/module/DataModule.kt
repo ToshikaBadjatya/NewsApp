@@ -2,6 +2,7 @@ package com.example.newsapp.di.module
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.log
 import com.example.newsapp.data.impl.NewsDatabaseImpl
 import com.example.newsapp.data.impl.NewsNetworkImpl
 import com.example.newsapp.data.local.dao.NewsDao
@@ -12,6 +13,7 @@ import com.example.newsapp.di.Database
 import com.example.newsapp.di.Network
 import com.example.newsapp.domain.NewsRepository
 import com.example.newsapp.interfaces.DispatchersProvider
+import com.example.newsapp.interfaces.Logger
 import com.example.newsapp.utils.constants.NetworkConstants
 import com.example.newsapp.utils.others.Utils
 import dagger.Module
@@ -59,13 +61,13 @@ class DataModule {
 
     @Provides
     @Network
-    fun getNewsRepositoryNetwork(newsApi: NewsApi,utils: Utils,dispatchersProvider: DispatchersProvider): NewsRepository{
-        return NewsNetworkImpl(dispatchersProvider,newsApi,utils)
+    fun getNewsRepositoryNetwork(newsApi: NewsApi,utils: Utils,dispatchersProvider: DispatchersProvider,logger: Logger): NewsRepository{
+        return NewsNetworkImpl(dispatchersProvider,newsApi,utils, logger)
     }
     @Provides
     @Database
-    fun getNewsRepositoryDb(newsDao: NewsDao): NewsRepository{
-        return NewsDatabaseImpl(newsDao)
+    fun getNewsRepositoryDb(newsDao: NewsDao,dispatchersProvider: DispatchersProvider,logger: Logger): NewsRepository{
+        return NewsDatabaseImpl(dispatchersProvider,newsDao,logger)
     }
 
 }

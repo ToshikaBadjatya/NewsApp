@@ -27,6 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,6 +37,7 @@ import com.example.newsapp.data.impl.NewsNetworkImpl
 import androidx.navigation.NavController
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.ui.commonUi.NewsUiList
+import com.example.newsapp.utils.constants.TestingSemantics
 import com.example.newsapp.viewmodels.DatabaseNewsViewmodel
 import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 import com.example.newsapp.viewmodels.NewsViewModel
@@ -95,6 +98,9 @@ fun Search(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp)
+                .semantics{
+                    contentDescription= TestingSemantics.SEARCH_BAR
+                }
         )
     }
 

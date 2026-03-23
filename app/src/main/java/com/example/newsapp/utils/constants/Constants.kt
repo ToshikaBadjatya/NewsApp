@@ -9,6 +9,7 @@ object TestingSemantics{
     const val LOADER="loader"
     const val NEWS_TITLE="news_title"
     const val NEWS_LIST="news_list"
+    const val SEARCH_BAR="news_list"
     const val SAVED_NEWS="news_saved"
     const val NEWS_DESCRIPTION="news_description"
 

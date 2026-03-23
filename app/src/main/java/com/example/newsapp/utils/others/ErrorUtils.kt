@@ -30,7 +30,7 @@ fun <T> Response<T>.toCustomError(): CustomErrorClass {
     }
 }
 
-sealed class CustomErrorClass(val msg: String) : Exception(msg) {
+sealed class CustomErrorClass(val msg: String) : Throwable(msg) {
     object NoInternet  : CustomErrorClass("No internet connection. Please check your network.")
     object Timeout     : CustomErrorClass("Request timed out. Please try again.")
     object Unauthorized: CustomErrorClass("Session expired. Please login again.")
@@ -38,5 +38,5 @@ sealed class CustomErrorClass(val msg: String) : Exception(msg) {
     object ParsingError: CustomErrorClass("Something went wrong while processing data.")
     object RateLimited : CustomErrorClass("Too many requests. Please slow down.")
     object ServerError : CustomErrorClass("Server error. Please try again later.")
-    class Unknown(msg: String)    : CustomErrorClass(msg)
+    class  Unknown(msg: String)    : CustomErrorClass(msg)
 }

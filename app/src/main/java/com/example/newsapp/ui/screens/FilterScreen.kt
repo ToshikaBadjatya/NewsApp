@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
 // Default instances used to represent each filter type in the UI
-private val filterOptions = listOf(
+val filterOptions = listOf(
     Filters.Category,
     Filters.Country,
     Filters.Language
