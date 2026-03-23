@@ -11,6 +11,7 @@ import com.example.newsapp.di.Network
 import com.example.newsapp.domain.NewsRepository
 import com.example.newsapp.interfaces.DispatchersProvider
 import com.example.newsapp.interfaces.Logger
+import com.example.newsapp.data.remote.models.Filters
 import com.example.newsapp.ui.UIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +54,13 @@ open class NewsViewModel @Inject constructor(
                 .flowOn(dispatcherProvider.io)
                 .collect { news.value = it }
         }
+    }
 
+    fun applyFilter(filter: Filters) {
+        viewModelScope.launch {
+            newsRepository.fetchByFilter(filter)
+                .flowOn(dispatcherProvider.io)
+                .collect { news.value = it }
+        }
     }
 }

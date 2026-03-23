@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.newsapp.ui.UIState
 
 @Composable
-fun NewsPaginationList(pagingList: LazyPagingItems<Article>, onItemClick: (Article) -> Unit = {}) {
+fun NewsPaginationList(pagingList: LazyPagingItems<Article>, onItemClick: (Article) -> Unit = {},onSave: ((Article) -> Unit)? = null) {
     val response = pagingList.loadState.refresh
     when (response) {
         is LoadState.Loading -> ShowLoading(stringResource(R.string.loading_news))

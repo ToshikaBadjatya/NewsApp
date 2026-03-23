@@ -6,6 +6,7 @@ import com.example.newsapp.data.remote.api.NewsApi
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.data.remote.models.News
 import com.example.newsapp.domain.NewsRepository
+import com.example.newsapp.data.remote.models.Filters
 import com.example.newsapp.interfaces.DispatchersProvider
 import com.example.newsapp.ui.UIState
 import com.example.newsapp.utils.others.CustomErrorClass
@@ -65,6 +66,24 @@ class NewsNetworkImpl @Inject constructor(val dispatchersProvider: DispatchersPr
             emit(UIState.Failure(e.message))
         }.flowOn(dispatchersProvider.io)
     }
+
+    override suspend fun fetchByFilter(filter: Filters): Flow<UIState<List<Article>>> {
+        return flow {
+            emit(UIState.Loading)
+            if (!utils.hasInternet()) throw CustomErrorClass.NoInternet
+            val news: News = when (filter) {
+                is Filters.Language -> newsApi.getNewsByLanguage(filter.value)
+                is Filters.Country  -> newsApi.getTopNews(country = filter.value).body()
+                    ?: throw CustomErrorClass.Unknown
+                is Filters.Source   -> newsApi.getNewsBySource(filter.value)
+            }
+            emit(UIState.Success(news.articles))
+        }.catch { e ->
+            emit(UIState.Failure(e.message))
+        }.flowOn(dispatchersProvider.io)
+    }
+
+    override suspend fun saveArticles(article: Article) {}
 
 
 }

@@ -3,6 +3,7 @@ package com.example.newsapp.data.impl
 import com.example.newsapp.data.local.dao.NewsDao
 import com.example.newsapp.data.local.database.ArticleEntity
 import com.example.newsapp.data.remote.models.Article
+import com.example.newsapp.data.remote.models.Filters
 import com.example.newsapp.data.remote.models.Source
 import com.example.newsapp.domain.NewsRepository
 import com.example.newsapp.ui.UIState
@@ -21,8 +22,13 @@ class NewsDatabaseImpl @Inject constructor(val newsDao: NewsDao) : NewsRepositor
         emit(UIState.Success(emptyList()))
     }
 
-    suspend fun saveArticle(article: Article) {
+    override suspend fun fetchByFilter(filter: Filters): Flow<UIState<List<Article>>> {
+        return flow {  }
+    }
+
+    override suspend fun saveArticles(article: Article) {
         newsDao.insertEntity(article.toEntity())
+
     }
 
     suspend fun deleteArticle(article: Article) {

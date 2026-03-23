@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newsapp.R
 import com.example.newsapp.data.impl.NewsNetworkImpl
 import androidx.navigation.NavController
+import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.ui.commonUi.NewsUiList
 import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 import com.example.newsapp.viewmodels.NewsViewModel
@@ -42,7 +43,7 @@ import kotlinx.coroutines.flow.filter
 
 @OptIn(FlowPreview::class)
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(goToDetail:(Article)-> Unit) {
     val search = remember { mutableStateOf("") }
     val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
     LaunchedEffect(Unit) {
@@ -54,7 +55,7 @@ fun SearchScreen(navController: NavController) {
     }
     Search(search.value, { search.value = it })
     val newsState = newsViewModel._news.collectAsStateWithLifecycle()
-    NewsUiList(newsState.value, onItemClick = { navController.navigate("news_detail") })
+    NewsUiList(newsState.value, onItemClick = {goToDetail(it)})
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

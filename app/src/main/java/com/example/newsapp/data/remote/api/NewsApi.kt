@@ -16,6 +16,12 @@ interface NewsApi {
         @Query("page") pageNum: Int = DEFAULT_PAGE_NUM,
         @Query("pageSize") pageSize: Int = DEFAULT_PAGE_SIZE,
     ): retrofit2.Response<News>
+    @GET(NetworkConstants.EVERYTHING)
+    suspend fun getNewsByCountry(
+        @Query("country") country: String=DEFAULT_COUNTRY ,
+        @Query("page") pageNum: Int = DEFAULT_PAGE_NUM,
+        @Query("pageSize") pageSize: Int = DEFAULT_PAGE_SIZE,
+    ): News
 
     @GET(NetworkConstants.EVERYTHING)
     suspend fun getNewsByLanguage(

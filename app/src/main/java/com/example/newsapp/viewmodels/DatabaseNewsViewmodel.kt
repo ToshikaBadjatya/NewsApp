@@ -1,5 +1,6 @@
 package com.example.newsapp.viewmodels
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 
 import com.example.newsapp.data.remote.models.Article
@@ -9,6 +10,8 @@ import com.example.newsapp.domain.NewsRepository
 import com.example.newsapp.interfaces.DispatchersProvider
 import com.example.newsapp.interfaces.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -17,4 +20,11 @@ class DatabaseNewsViewmodel @Inject constructor(@Database override val newsRepos
                                                 @Database override val networkPager: Pager<Int, Article>,
                                                 override val logger: Logger,
                                                 override val dispatcherProvider: DispatchersProvider): NewsViewModel(newsRepository,networkPager,logger,dispatcherProvider)  {
+     fun saveArticles(article: Article) {
+         viewModelScope.launch {
+             withContext(dispatcherProvider.io){
+                 newsRepository.saveArticles(article)
+             }
+         }
+    }
 }

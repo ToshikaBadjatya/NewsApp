@@ -25,14 +25,18 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             TopHeadlineScreen(navController)
         }
         composable(Destination.Search.path) {
-            SearchScreen(navController)
+            SearchScreen() {
+                navController.navigate("news_detail")
+        }
         }
         composable(Destination.Saved.path) {
             SavedItemsScreen(navController)
         }
         composable(Destination.FilterScreen.path) {
-            FilterScreen()
+            FilterScreen(){
+                navController.navigate("news_detail") }
+            }
         }
 
-    }
+
 }
