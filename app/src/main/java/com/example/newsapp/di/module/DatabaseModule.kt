@@ -28,6 +28,7 @@ class DatabaseModule {
             NewsDatabase::class.java,
             dbName
         )
+            .fallbackToDestructiveMigration()
             .build()
     }
     @Singleton

@@ -1,11 +1,13 @@
 package com.example.newsapp.data.remote.models
 
-sealed class Filters(val displayName: String) {
-     var value: String=""
+import com.example.newsapp.utils.constants.NetworkConstants
 
-    object Language : Filters(displayName = "Language")
-    object Country : Filters(displayName = "Country")
+sealed class Filters(val displayName: String,var value: String) {
 
-    object Source : Filters(displayName = "Source")
+
+    object Language : Filters(displayName = "Language", NetworkConstants.DEFAULT_LANGUAGE)
+    object Country : Filters(displayName = "Country", NetworkConstants.DEFAULT_COUNTRY)
+
+    object Category : Filters(displayName = "Category", NetworkConstants.DEFAULT_CATEGORY)
 
 }

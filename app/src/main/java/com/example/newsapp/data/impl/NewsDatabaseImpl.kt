@@ -1,5 +1,6 @@
 package com.example.newsapp.data.impl
 
+import android.util.Log
 import com.example.newsapp.data.local.dao.NewsDao
 import com.example.newsapp.data.local.database.ArticleEntity
 import com.example.newsapp.data.remote.models.Article
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class NewsDatabaseImpl @Inject constructor(val newsDao: NewsDao) : NewsRepository {
 
     override suspend fun fetchNews(start: Int): Flow<List<Article>> = flow {
-        emit(newsDao.getAllEntities().map { it.toArticle() })
+        val entities=newsDao.getAllEntities().map { it.toArticle() }
+        emit(entities)
     }
 
     override suspend fun searchNews(search: String): Flow<UIState<List<Article>>> = flow {
@@ -37,7 +39,7 @@ class NewsDatabaseImpl @Inject constructor(val newsDao: NewsDao) : NewsRepositor
 }
 
 private fun ArticleEntity.toArticle() = Article(
-    source = Gson().fromJson(source, Source::class.java),
+    source = source,
     author = author,
     title = title,
     description = description,
@@ -48,7 +50,7 @@ private fun ArticleEntity.toArticle() = Article(
 )
 
 private fun Article.toEntity() = ArticleEntity(
-    source = Gson().toJson(source),
+    source =source,
     author = author,
     title = title ?: "",
     description = description,

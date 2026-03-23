@@ -8,10 +8,9 @@ import com.example.newsapp.data.remote.models.Source
 import com.google.gson.Gson
 
 @Entity(tableName = "articles")
-@TypeConverters(SourceConverters::class)
 data class ArticleEntity(
     @PrimaryKey(autoGenerate = true) val articleId: Int = 0,
-    val source: String,              // Needs converter
+    val source: Source?,
     val author: String?,
     val title: String,
     val description: String?,

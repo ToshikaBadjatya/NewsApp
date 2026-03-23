@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +35,7 @@ import com.example.newsapp.data.impl.NewsNetworkImpl
 import androidx.navigation.NavController
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.ui.commonUi.NewsUiList
+import com.example.newsapp.viewmodels.DatabaseNewsViewmodel
 import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 import com.example.newsapp.viewmodels.NewsViewModel
 import kotlinx.coroutines.FlowPreview
@@ -46,6 +48,7 @@ import kotlinx.coroutines.flow.filter
 fun SearchScreen(goToDetail:(Article)-> Unit) {
     val search = remember { mutableStateOf("") }
     val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
+    val databaseViewmodel: DatabaseNewsViewmodel = hiltViewModel()
     LaunchedEffect(Unit) {
         snapshotFlow { search.value }
             .debounce(1000)
@@ -55,7 +58,12 @@ fun SearchScreen(goToDetail:(Article)-> Unit) {
     }
     Search(search.value, { search.value = it })
     val newsState = newsViewModel._news.collectAsStateWithLifecycle()
-    NewsUiList(newsState.value, onItemClick = {goToDetail(it)})
+    NewsUiList(newsState.value, onItemClick = {goToDetail(it)},
+        onSave = { article ->
+            Log.e("article","save called")
+            databaseViewmodel.saveArticles(article)
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.screens
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +24,7 @@ fun TopHeadlineScreen(navController: NavController) {
         navController.navigate(MainDestinations.NewsDetail.createRoute(article.url))
     },
         onSave = { article ->
+            Log.e("article","save called")
             databaseViewmodel.saveArticles(article)
         }
         )

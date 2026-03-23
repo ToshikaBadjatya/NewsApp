@@ -42,7 +42,7 @@ import com.example.newsapp.utils.constants.TestingSemantics
 fun NewsList(items: List<Article>, onItemClick: (Article) -> Unit = {},onSave: ((Article) -> Unit)? = null) {
     LazyColumn(modifier = Modifier.semantics{contentDescription= TestingSemantics.NEWS_LIST}) {
         items(items.size) { it ->
-            NewsItem(items[it], onClick = onItemClick)
+            NewsItem(items[it], onClick = onItemClick, onSave = onSave)
         }
     }
 }

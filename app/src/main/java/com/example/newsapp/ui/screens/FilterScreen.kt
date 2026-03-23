@@ -1,5 +1,6 @@
 package com.example.newsapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.data.remote.models.Filters
 import com.example.newsapp.ui.commonUi.NewsUiList
+import com.example.newsapp.viewmodels.DatabaseNewsViewmodel
 import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -31,7 +33,7 @@ import kotlinx.coroutines.flow.filter
 
 // Default instances used to represent each filter type in the UI
 private val filterOptions = listOf(
-    Filters.Source,
+    Filters.Category,
     Filters.Country,
     Filters.Language
 )
@@ -40,17 +42,20 @@ private val filterOptions = listOf(
 fun FilterScreen(goToDetail: (Article) -> Unit) {
     val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
     val newsState = newsViewModel._news.collectAsStateWithLifecycle()
+    val databaseViewmodel: DatabaseNewsViewmodel = hiltViewModel()
     var value = remember {
         mutableStateOf<String?>(null)
     }
     var selected = remember {
-        mutableStateOf<Filters>(Filters.Source)
+        mutableStateOf<Filters>(Filters.Category)
     }
     LaunchedEffect(Unit) {
+        value.value=selected.value.value
+        newsViewModel.applyFilter(selected.value)
         snapshotFlow { value.value }
             .debounce(1000)
             .distinctUntilChanged()
-            .filter { it!=null}
+            .filter {! it.isNullOrEmpty()}
             .collect {
                 selected.value.value=value.value!!
                 newsViewModel.applyFilter(selected.value)
@@ -59,19 +64,26 @@ fun FilterScreen(goToDetail: (Article) -> Unit) {
 
     Column {
         FilterItems { filter ->
-            selected.value=filter
-            value.value=""
-            selected.value.value=""
+            selected.value = filter
+            value.value = filter.value
+            newsViewModel.applyFilter(selected.value)
         }
-        TextField(value=value.value?:"", onValueChange = {value.value=it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp))
-        NewsUiList(newsState.value, onItemClick = { goToDetail(it) })
+        TextField(
+            value = value.value ?: "", onValueChange = { value.value = it },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+        )
+        NewsUiList(
+            newsState.value, onItemClick = { goToDetail(it) },
+            onSave = {article ->
+                Log.e("article","save called")
+                databaseViewmodel.saveArticles(article)
+            })
     }
 }
 
 @Composable
 fun FilterItems(onFilterSelected: (Filters) -> Unit = {}) {
-    val selected = remember { mutableStateOf<Filters>(Filters.Source) }
+    val selected = remember { mutableStateOf<Filters>(Filters.Category) }
 
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp),

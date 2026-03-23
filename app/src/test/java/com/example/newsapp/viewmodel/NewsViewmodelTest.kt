@@ -117,13 +117,13 @@ class NewsViewmodelTest {
     fun testSearchNews_withQuery_repositoryReturnsError() = runTest {
         val query = "abc"
         whenever(newsRepository.searchNews(query))
-            .thenReturn(flowOf(UIState.Failure(CustomErrorClass.ParsingError.msg)))
+            .thenReturn(flowOf(UIState.Failure(CustomErrorClass.Unknown.msg)))
 
         val viewModel = NewsViewModel(newsRepository, networkPager, logger, dispatchersProvider)
         viewModel.search(query)
 
         viewModel._news.test {
-            assertEquals(UIState.Failure<Article>(CustomErrorClass.ParsingError.msg), awaitItem())
+            assertEquals(UIState.Failure<Article>(CustomErrorClass.Unknown.msg), awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
         verify(newsRepository, times(1)).searchNews(query)
