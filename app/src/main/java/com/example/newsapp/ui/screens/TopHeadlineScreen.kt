@@ -6,14 +6,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 //import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.navigation.NavController
+import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.navigation.MainDestinations
 import com.example.newsapp.ui.commonUi.NewsPaginationList
 import com.example.newsapp.viewmodels.DatabaseNewsViewmodel
 import com.example.newsapp.viewmodels.NetworkNewsViewmodel
 
 @Composable
-fun TopHeadlineScreen(navController: NavController) {
+fun TopHeadlineScreen(goToDetail: (Article) -> Unit) {
     val newsViewModel: NetworkNewsViewmodel = hiltViewModel()
     val databaseViewmodel: DatabaseNewsViewmodel = hiltViewModel()
     LaunchedEffect(Unit) {
@@ -21,7 +21,7 @@ fun TopHeadlineScreen(navController: NavController) {
     }
     val pagingList = newsViewModel._newsPagingItem.collectAsLazyPagingItems()
     NewsPaginationList(pagingList, onItemClick = { article ->
-        navController.navigate(MainDestinations.NewsDetail.createRoute(article.url))
+        goToDetail.invoke(article)
     },
         onSave = { article ->
             Log.e("article","save called")

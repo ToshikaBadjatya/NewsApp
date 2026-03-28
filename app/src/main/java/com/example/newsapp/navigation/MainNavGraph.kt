@@ -1,5 +1,4 @@
 package com.example.newsapp.navigation
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,12 +20,14 @@ fun MainNavGraph() {
         startDestination = MainDestinations.Dashboard.path,
         modifier = Modifier.fillMaxSize(),
     ) {
+       
         composable(
             route = MainDestinations.Dashboard.path,
         ) {
-            MainLauncherScreen()
+            MainLauncherScreen { article ->
+                navController.navigate(MainDestinations.NewsDetail.createRoute(article.url))
+            }
         }
-
         composable(
             route = MainDestinations.NewsDetail.path,
             arguments = listOf(navArgument("url") { type = NavType.StringType })

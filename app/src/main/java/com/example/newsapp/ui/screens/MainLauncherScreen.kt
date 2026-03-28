@@ -9,13 +9,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.navigation.Destination
 import com.example.newsapp.navigation.NavGraph
 import com.example.newsapp.ui.commonUi.TopHeadline
 import com.example.newsapp.ui.commonUi.BottomNavigationBar
 
 @Composable
-fun MainLauncherScreen(){
+fun MainLauncherScreen( goToDetail:(Article)-> Unit){
     val navController= rememberNavController()
     val selectedPosition = remember {
         mutableStateOf(0)
@@ -35,7 +36,7 @@ fun MainLauncherScreen(){
             }
         }
     ) {paddingValues ->
-        NavGraph(navController, modifier = Modifier.fillMaxSize().padding(paddingValues))
+        NavGraph(navController, modifier = Modifier.fillMaxSize().padding(paddingValues),goToDetail)
     }
 
 }
