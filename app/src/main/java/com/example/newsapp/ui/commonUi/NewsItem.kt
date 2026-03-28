@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.newsapp.common.GlobalState
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.utils.constants.TestingSemantics
 
@@ -48,10 +49,10 @@ fun NewsList(items: List<Article>, onItemClick: (Article) -> Unit = {},onSave: (
 }
 
 @Composable
-fun NewsItem(article: Article, showSave: Boolean = true, onSave: ((Article) -> Unit)? = null,
+fun NewsItem(article: Article,  onSave: ((Article) -> Unit)? = null,
              onClick: ((Article) -> Unit)? = null) {
     Log.e("item", "article shown is $article")
-    val saved = remember { mutableStateOf(false) }
+    val saved= remember {  mutableStateOf<Boolean>(!GlobalState.canSave(article))}
     Card(
         modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
@@ -65,11 +66,11 @@ fun NewsItem(article: Article, showSave: Boolean = true, onSave: ((Article) -> U
                 modifier = Modifier.height(120.dp).fillMaxWidth().weight(2f)
             )
             Box(modifier = Modifier.weight(3f).padding(start = 10.dp)) {
-                if (showSave) {
+                if (onSave!=null) {
                     IconButton(
                         onClick = {
-                            saved.value = !saved.value
-                            onSave?.invoke(article)
+                            saved.value=!saved.value
+                            onSave.invoke(article)
                         },
                         modifier = Modifier.size(32.dp).align(Alignment.TopEnd).padding(start = 4.dp  ).semantics{
                             contentDescription= TestingSemantics.SAVED_NEWS

@@ -12,4 +12,5 @@ interface NewsRepository {
     suspend fun searchNews(search: String): Flow<UIState<List<Article>>>
     suspend fun fetchByFilter(filter: Filters): Flow<UIState<List<Article>>>
     suspend fun saveArticles(article: Article)
+    suspend fun deleteArticle(article: Article)
 }

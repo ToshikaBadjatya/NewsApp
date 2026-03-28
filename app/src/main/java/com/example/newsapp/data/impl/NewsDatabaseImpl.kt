@@ -43,7 +43,7 @@ class NewsDatabaseImpl @Inject constructor(
         newsDao.insertEntity(article.toEntity())
     }
 
-    suspend fun deleteArticle(article: Article) {
+    override suspend fun deleteArticle(article: Article) {
         logger.log("NewsDatabaseImpl", "deleteArticle: ${article.url}")
         newsDao.deleteByUrl(article.url)
     }

@@ -2,6 +2,7 @@ package com.example.newsapp.viewmodels
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
+import com.example.newsapp.common.GlobalState
 
 import com.example.newsapp.data.remote.models.Article
 import com.example.newsapp.di.Database
@@ -23,7 +24,15 @@ class DatabaseNewsViewmodel @Inject constructor(@Database override val newsRepos
      fun saveArticles(article: Article) {
          viewModelScope.launch {
              withContext(dispatcherProvider.io){
-                 newsRepository.saveArticles(article)
+                 if(GlobalState.canSave(article)){
+                     GlobalState.addToSaved(article)
+                     newsRepository.saveArticles(article)
+                 }
+                 else{
+                     GlobalState.removeFromSaved(article)
+                     newsRepository.deleteArticle(article)
+                 }
+
              }
          }
     }

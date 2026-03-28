@@ -77,4 +77,8 @@ class NewsNetworkImpl @Inject constructor(
     override suspend fun saveArticles(article: Article) {
         logger.log("NewsNetworkImpl", "saveArticles: ${article.url}")
     }
+
+    override suspend fun deleteArticle(article: Article) {
+
+    }
 }
