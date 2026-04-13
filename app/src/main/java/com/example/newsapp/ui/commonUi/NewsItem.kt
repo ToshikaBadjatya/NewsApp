@@ -1,7 +1,6 @@
 package com.example.newsapp.ui.commonUi
 
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -40,8 +38,12 @@ import com.example.newsapp.utils.constants.TestingSemantics
 
 
 @Composable
-fun NewsList(items: List<Article>, onItemClick: (Article) -> Unit = {},onSave: ((Article) -> Unit)? = null) {
-    LazyColumn(modifier = Modifier.semantics{contentDescription= TestingSemantics.NEWS_LIST}) {
+fun NewsList(
+    items: List<Article>,
+    onItemClick: (Article) -> Unit = {},
+    onSave: ((Article) -> Unit)? = null
+) {
+    LazyColumn() {
         items(items.size) { it ->
             NewsItem(items[it], onClick = onItemClick, onSave = onSave)
         }
@@ -54,7 +56,7 @@ fun NewsItem(article: Article,  onSave: ((Article) -> Unit)? = null,
     Log.e("item", "article shown is $article")
     val saved= remember {  mutableStateOf<Boolean>(!GlobalState.canSave(article))}
     Card(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(10.dp),
+        modifier = Modifier.fillMaxWidth().padding(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
         onClick = {
             onClick?.invoke(article)

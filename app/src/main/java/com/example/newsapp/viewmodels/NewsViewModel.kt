@@ -38,6 +38,7 @@ open class NewsViewModel @Inject constructor(
     fun fetchTopHeadlines() {
         viewModelScope.launch {
             networkPager.flow.cachedIn(viewModelScope)
+                .flowOn(dispatcherProvider.io)
                 .map {
                     it.filter {
                         !it.title.isNullOrEmpty()

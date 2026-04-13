@@ -6,6 +6,8 @@ import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.testing.asSnapshot
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import app.cash.turbine.test
@@ -25,7 +27,9 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -112,13 +116,13 @@ class NewsViewmodelTest {
     fun testSearchNews_withQuery_repositoryReturnsError() = runTest {
         val query = "abc"
         whenever(newsRepository.searchNews(query))
-            .thenReturn(flowOf(UIState.Failure(CustomErrorClass.ParsingError.msg)))
+            .thenReturn(flowOf(UIState.Failure(CustomErrorClass.ServerError)))
 
         val viewModel = NewsViewModel(newsRepository, networkPager, logger, dispatchersProvider)
         viewModel.search(query)
 
         viewModel._news.test {
-            assertEquals(UIState.Failure<Article>(CustomErrorClass.ParsingError.msg), awaitItem())
+            assertEquals(UIState.Failure<Article>(CustomErrorClass.ServerError), awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
         verify(newsRepository, times(1)).searchNews(query)
@@ -126,78 +130,29 @@ class NewsViewmodelTest {
 
     // --- Paging tests ---
 
-//    @Test
-//    fun testFetchTopHeadlines_pagingDataContainsExpectedItems() = runTest {
-//        val viewModel = NewsViewModel(newsRepository, networkPager, logger, dispatchersProvider)
-//        viewModel.fetchTopHeadlines()
-//        advanceUntilIdle()
-//
-//        viewModel._newsPagingItem.test {
-//            val pagingData = awaitItem()
-//            val items = pagingData.toList()
-//            // ViewModel filters out articles with null/empty titles
-//            val expected = TestData.articleList.filter { !it.title.isNullOrEmpty() }
-//            assertEquals(expected, items)
-//            cancelAndIgnoreRemainingEvents()
-//        }
-//    }
-//
-//    @Test
-//    fun testFetchTopHeadlines_pagingDataHasError() = runTest {
-//        val viewModel = NewsViewModel(newsRepository, networkErrorPager, logger, dispatchersProvider)
-//        viewModel.fetchTopHeadlines()
-//        advanceUntilIdle()
-//
-//        viewModel._newsPagingItem.test {
-//            val pagingData = awaitItem()
-//            val differ = buildDiffer()
-//            differ.submitData(pagingData)
-//            advanceUntilIdle()
-//            val errorState = differ.loadStateFlow.first {
-//                it.refresh is LoadState.Error || it.append is LoadState.Error
-//            }
-//               if(errorState.refresh is LoadState.Error){
-//                   assertEquals(
-//                       CustomErrorClass.ServerError,
-//                       (errorState.refresh as LoadState.Error).error
-//                   )
-//               }
-//               else if(errorState.append is LoadState.Error){
-//                   assertEquals(
-//                       CustomErrorClass.ServerError,
-//                       (errorState.append as LoadState.Error).error
-//                   )
-//               }
-//
-//
-//
-//            cancelAndIgnoreRemainingEvents()
-//        }
-//    }
+    @Test
+    fun testFetchTopHeadlines_pagingDataContainsExpectedItems() = runTest {
+        val viewModel = NewsViewModel(newsRepository, networkPager, logger, dispatchersProvider)
+        viewModel.fetchTopHeadlines()
 
-    // --- Helpers ---
+        val snapshot: List<Article> = viewModel._newsPagingItem.asSnapshot()
 
-    private fun buildDiffer() = AsyncPagingDataDiffer(
-        diffCallback = ArticleDiffCallback(),
-        updateCallback = NoopListCallback(),
-        workerDispatcher = testDispatcher
-    )
-
-    private suspend fun PagingData<Article>.toList(): List<Article> {
-        val differ = buildDiffer()
-        differ.submitData(this)
-        return differ.snapshot().items
+        val expected = TestData.articleList.filter { !it.title.isNullOrEmpty() }
+        assertEquals(expected, snapshot)
     }
 
-    private class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article) = oldItem.url == newItem.url
-        override fun areContentsTheSame(oldItem: Article, newItem: Article) = oldItem == newItem
+    @Test
+    fun testFetchTopHeadlines_pagingDataHasError() = runTest {
+
+        val viewModel = NewsViewModel(newsRepository, networkErrorPager, logger, dispatchersProvider)
+        viewModel.fetchTopHeadlines()
+
+        runCatching {
+            viewModel._newsPagingItem.asSnapshot()
+            assertTrue("Expected an exception but none was thrown", false)
+        }.onFailure { it->
+            assertEquals(it, CustomErrorClass.ServerError)
+        }
     }
 
-    private class NoopListCallback : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int) {}
-        override fun onRemoved(position: Int, count: Int) {}
-        override fun onMoved(fromPosition: Int, toPosition: Int) {}
-        override fun onChanged(position: Int, count: Int, payload: Any?) {}
-    }
 }

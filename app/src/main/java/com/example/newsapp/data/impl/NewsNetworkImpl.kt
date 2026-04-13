@@ -52,7 +52,7 @@ class NewsNetworkImpl @Inject constructor(
         }
     }.catch { e ->
         logger.log("NewsNetworkImpl", "searchNews error: ${e.message}")
-        emit(UIState.Failure((e as? CustomErrorClass)?.msg ?: e.message))
+        emit(UIState.Failure(e))
     }.flowOn(dispatchersProvider.io)
 
     override suspend fun fetchByFilter(filter: Filters): Flow<UIState<List<Article>>> = flow {
@@ -71,7 +71,7 @@ class NewsNetworkImpl @Inject constructor(
         }
     }.catch { e ->
         logger.log("NewsNetworkImpl", "fetchByFilter error: ${e.message}")
-        emit(UIState.Failure((e as? CustomErrorClass)?.msg ?: e.message))
+        emit(UIState.Failure(e))
     }.flowOn(dispatchersProvider.io)
 
     override suspend fun saveArticles(article: Article) {

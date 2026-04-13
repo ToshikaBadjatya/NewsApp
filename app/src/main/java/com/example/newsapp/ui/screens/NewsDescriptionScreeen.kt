@@ -14,7 +14,7 @@ fun NewsDescriptionScreeen(navController: NavController, url: String) {
     Scaffold(
         topBar = {
             TopHeadline("News Description") {
-                navController.popBackStack(Destination.TopHeadline.path, false)
+                navController.popBackStack()
             }
         }
     ) { paddingValues ->

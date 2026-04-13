@@ -9,32 +9,31 @@ import com.example.newsapp.interfaces.DispatchersProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
     class NewsPagingSource@Inject constructor(val dispatchersProvider: DispatchersProvider,val callback:suspend (Int)-> Flow<List<Article>>): PagingSource<Int, Article>() {
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
-          var page=params.key?:1
-
-            return try {
-                var data: List<Article> = emptyList()
-
-                callback.invoke(page)
+            val page = params.key ?: 1
+            lateinit var loadResult: LoadResult<Int, Article>
+            runCatching {
+                val data = callback.invoke(page)
                     .flowOn(dispatchersProvider.io)
-                    .catch { throw it }
-                    .collect {
-                        data = it
-                    }
+                    .first()
 
-                LoadResult.Page(
-                    data,
-                    if (page > 1) page - 1 else null,
-                    page + 1
+                loadResult=LoadResult.Page(
+                    data = data,
+                    prevKey = if (page > 1) page - 1 else null,
+                    nextKey = page + 1
                 )
-            } catch (e: Exception) {
-                Log.e("error","error got $e")
-                LoadResult.Error(e)
+            }.onFailure {
+                loadResult= LoadResult.Error(it)
             }
+
+            return loadResult
+
+
         }
 
         override fun getRefreshKey(state: PagingState<Int, Article>): Int? {

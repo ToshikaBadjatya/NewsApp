@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.utils.constants.TestingSemantics
+import com.example.newsapp.utils.others.CustomErrorClass
 
 @Composable
 fun ShowLoading(msg: String) {
@@ -46,7 +47,7 @@ fun ShowLoading(msg: String) {
     }
 }
 @Composable
-fun ShowError(message: String?) {
+fun ShowError(e: Throwable) {
     Log.e("error","show error called")
     var visible by remember { mutableStateOf(true) }
 
@@ -54,14 +55,22 @@ fun ShowError(message: String?) {
         AlertDialog(
             onDismissRequest = { visible = false },
             title = { Text(text = "Error", style = MaterialTheme.typography.titleMedium) },
-            text = { Text(text = message ?: "Internal server error", Modifier.semantics{
+            text = { Text(text = e.message ?: "Internal server error", Modifier.semantics{
                 contentDescription= TestingSemantics.ERROR_MESSAGE
             }) },
-            confirmButton = {
+            dismissButton = {
                 TextButton(onClick = { visible = false }, ) {
                     Text("OK")
                 }
             }
+            , confirmButton = {
+                if(e ==CustomErrorClass.NoInternet) {
+                    TextButton(onClick = { visible = false },) {
+                        Text("Retry")
+                    }
+                }
+            }
+
         )
     }
 }

@@ -59,14 +59,17 @@ fun SearchScreen(goToDetail:(Article)-> Unit) {
             .filter { it.isNotEmpty() }
             .collect { query -> newsViewModel.search(query) }
     }
-    Search(search.value, { search.value = it })
-    val newsState = newsViewModel._news.collectAsStateWithLifecycle()
-    NewsUiList(newsState.value, onItemClick = {goToDetail(it)},
-        onSave = { article ->
-            Log.e("article","save called")
-            databaseViewmodel.saveArticles(article)
-        }
-    )
+    Column {
+        Search(search.value, { search.value = it })
+        val newsState = newsViewModel._news.collectAsStateWithLifecycle()
+        NewsUiList(newsState.value, onItemClick = {goToDetail(it)},
+            onSave = { article ->
+                Log.e("article","save called")
+                databaseViewmodel.saveArticles(article)
+            }
+        )
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
